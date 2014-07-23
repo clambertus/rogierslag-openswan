@@ -1,6 +1,7 @@
 define openswan::user( $username,
                       $password,
-                      $ip) {
+                      $ipSuffix) {
+  $ip = "${openswan::ipPrefix}${ipSuffix}"
 
   concat::fragment { "openswan-${username}":
     target  => '/etc/ppp/chap-secrets',

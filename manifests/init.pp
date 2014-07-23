@@ -47,12 +47,12 @@ class openswan( $ip,
     $vpnIp      = "10.${range}.${range}.1"
     $startBlock = "10.${range}.${range}.10"
     $endBlock   = "10.${range}.${range}.250"
-    $ipPrefix   = "10.${range}.${range}."
+    $ipPrefix = "10.${range}.${range}."
   } elsif $block == 2 {
     $vpnIp      = "192.168.${range}.1"
     $startBlock = "192.168.${range}.10"
     $endBlock   = "192.168.${range}.250"
-    $ipPrefix   = "192.168.${range}."
+    $ipPrefix = "192.168.${range}."
   } else {
     die ( "Only blocks 1 and 2 are allowed" )
   }
@@ -118,7 +118,7 @@ class openswan( $ip,
   concat::fragment { 'chap-secretsDefault':,
     target  => '/etc/ppp/chap-secrets',
     content => "# Secrets for authentication using CHAP\n# client	server	secret			IP addresses\n\n",
-    order   => 1
+    order   => 01
   }
 
   file { '/etc/ipsec.secrets':
