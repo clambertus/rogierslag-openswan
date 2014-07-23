@@ -1,4 +1,4 @@
-class openswan::user( $username,
+define openswan::user( $username,
                       $password,
                       $ip) {
 
