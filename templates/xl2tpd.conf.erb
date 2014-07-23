@@ -1,0 +1,11 @@
+[global]
+ipsec saref = yes
+[lns default]
+ip range = <%= @startBlock %>-<%= @endBlock %>
+local ip = <%= @vpnIp %>
+refuse chap = yes
+refuse pap = yes
+require authentication = yes
+ppp debug = yes
+pppoptfile = /etc/ppp/options.xl2tpd
+length bit = yes

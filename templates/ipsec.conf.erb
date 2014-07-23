@@ -1,0 +1,9 @@
+version 2.0
+
+config setup
+  nat_traversal=yes
+  virtual_private=%v4:<%= @ipSubnet %>
+  oe=off
+  protostack=netkey
+
+include /etc/ipsec.d/l2tp-psk.conf

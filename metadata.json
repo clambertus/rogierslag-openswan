@@ -1,0 +1,29 @@
+{
+  "name": "rogierslag-openswan",
+  "version": "0.1.0",
+  "author": "rogierslag",
+  "summary": "Installs and configures an OpenSwan VPN server for use for iOS and OSX devices",
+  "license": "MIT License",
+  "source": "https://github.com/rogierslag/rogierslag-openvpn",
+  "project_page": "https://forge.puppetlabs.com/rogierslag/openswan",
+  "issues_url": "https://github.com/rogierslag/rogierslag-openvpn/issues",
+  "dependencies": [
+    {
+      "name": "puppetlabs-stdlib",
+      "version_range": ">= 1.0.0"
+    },
+    {
+      "name": "thias-sysctl",
+      "version_range": ">= 0.3.2"
+    },
+    {   
+      "name": "puppetlabs-concat",
+      "version_range": ">= 1.0.4"
+    },
+    {   
+      "name": "puppetlabs-firewall",
+      "version_range": ">= 1.1.3"
+    }  
+  ]
+}
+
