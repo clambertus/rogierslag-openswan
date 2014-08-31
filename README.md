@@ -15,65 +15,45 @@
 
 ## Overview
 
-A one-maybe-two sentence summary of what the module does/what problem it solves.
-This is your 30 second elevator pitch for your module. Consider including
-OS/Puppet version it works with.
+This module allows for an easy VPN server configuration.
+This is especially useful for mobile devices, it works out-of-the-box with iOS and OSX.
 
 ## Module Description
 
-If applicable, this section should have a brief description of the technology
-the module integrates with and what that integration enables. This section
-should answer the questions: "What does this module *do*?" and "Why would I use
-it?"
-
-If your module has a range of functionality (installation, configuration,
-management, etc.) this is the time to mention it.
+The module installs a server, which you can also configure through the module.
+Furthermore, users can be added directly with their respective passwords.
 
 ## Setup
 
 ### What openswan affects
 
-* A list of files, packages, services, or operations that the module will alter,
-  impact, or execute on the system it's installed on.
-* This is a great place to stick any warnings.
-* Can be in list or paragraph form.
-
-### Setup Requirements **OPTIONAL**
-
-If your module requires anything extra before setting up (pluginsync enabled,
-etc.), mention it here.
+* OpenSWAN
+* Sysctl
+* Iptables
+* ppp
 
 ### Beginning with openswan
 
-The very basic steps needed for a user to get the module up and running.
-
-If your most recent release breaks compatibility or requires particular steps
-for upgrading, you may wish to include an additional section here: Upgrading
-(For an example, see http://forge.puppetlabs.com/puppetlabs/firewall).
+Just install the module and call it, just set the IP and gateway of your server and define a secret.
+Next you can use the users class to add any user to the system
 
 ## Usage
 
-Put the classes, types, and resources for customizing, configuring, and doing
-the fancy stuff with your module here.
+````puppet
+class { 'openswan': ip => $::ipaddress_eth0, gateway => '111.222.33.44', secret => 'somerandomstring', range => 100, block => 2 }
+````
 
-## Reference
+This creates an openswan server on the IP of `eth0` with the specified gatewy (since facter cannot determine the gateway, you will have to provide it yourself).
+Additionally a random string is defined.
+The block and range combination yield the VPN ip's to be in the range of `192.168.100.1`-`192.168.100.250`.
+If you'd like to use the `10.x.x.x` range, provide `block => 1` instead.
+This will yield an VPN ip range o f`10.100.100.1`-`10.100.100.250`.
 
-Here, list the classes, types, providers, facts, etc contained in your module.
-This section should include all of the under-the-hood workings of your module so
-people know what the module is touching on their system but don't need to mess
-with things. (We are working on automating this section!)
-
-## Limitations
-
-This is where you list OS compatibility, version compatibility, etc.
+Fair word of warning: the range you specify here should not be in use on any of the NAT layers you may be connecting through, or the VPN cannot be built!
+Hence if your internal home network uses `192.168.178.x`, you cannot use this range.
+Because of this reason, the module defaults to the `10.112.112.1`-`10.112.112.250` range (I have not seen this one in use so decided it was a safe bet).
 
 ## Development
 
-Since your module is awesome, other users will want to play with it. Let them
-know what the ground rules for contributing are.
-
-## Release Notes/Contributors/Etc **Optional**
-
-If you aren't using changelog, put your release notes here (though you should
-consider using changelog). You may also add any additional sections you feel are
-necessary or important to include here. Please use the `## ` header.
+In case you have any suggestions or problems, please create an issue directly on Github.
+https://github.com/rogierslag/rogierslag-openswan/issues
