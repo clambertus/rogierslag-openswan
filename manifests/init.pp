@@ -47,12 +47,12 @@ class openswan( $ip,
     $vpnIp      = "10.${range}.${range}.1"
     $startBlock = "10.${range}.${range}.10"
     $endBlock   = "10.${range}.${range}.250"
-    $ipPrefix   = "10.${range}.${range}."
+    $ipPrefix = "10.${range}.${range}."
   } elsif $block == 2 {
     $vpnIp      = "192.168.${range}.1"
     $startBlock = "192.168.${range}.10"
     $endBlock   = "192.168.${range}.250"
-    $ipPrefix   = "192.168.${range}."
+    $ipPrefix = "192.168.${range}."
   } else {
     die ( "Only blocks 1 and 2 are allowed" )
   }
@@ -118,7 +118,50 @@ class openswan( $ip,
   concat::fragment { 'chap-secretsDefault':,
     target  => '/etc/ppp/chap-secrets',
     content => "# Secrets for authentication using CHAP\n# client	server	secret			IP addresses\n\n",
-    order   => 1
+    order   => 01
+  }
+
+  firewall { '300 VPN Server routing':
+    proto   => 'all',
+    chain  => 'FORWARD',
+    destination => $ipSubnet,
+    iniface => 'eth0',
+    action  => 'accept',
+  }
+  
+  firewall { '301 VPN Server routing':
+    proto  => 'all',
+    chain  => 'FORWARD',
+    source => $ipSubnet,
+    action => 'accept',
+  }
+  
+  firewall { '302 VPN Server routing':
+    proto       => 'all',
+    chain       => 'FORWARD',
+    destination => $ipSubnet,
+    action      => 'drop',
+  }
+  
+  firewall { '303 VPN Server routing':
+    chain    => 'POSTROUTING',
+    jump     => 'MASQUERADE',
+    proto    => 'all',
+    outiface => 'eth0',
+    source   => $ipSubnet,
+    table    => 'nat',
+  }
+
+  firewall { '304 VPN Server':
+    proto => 'tcp',
+    port  => [500,4500,1701],
+    action => 'accept'
+  }
+
+  firewall { '305 VPN Server':
+    proto => 'udp',
+    port  => [500,4500,1701],
+    action => 'accept'
   }
 
   file { '/etc/ipsec.secrets':
